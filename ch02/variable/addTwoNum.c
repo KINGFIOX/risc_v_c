@@ -3,6 +3,7 @@
 // 函数外定义变量 x 和 y
 int x;
 int y;
+
 int addtwonum()
 {
     // 函数内声明变量 x 和 y 为外部变量
