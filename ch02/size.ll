@@ -21,13 +21,34 @@ define i32 @main() #0 {
   ret i32 0
 }
 
+; attributes #0 定义了一组 属性， #0 表示了这一组属性的引用
+;	no_inline 
+;	no_unwind 函数不会抛出异常
+;	opt_none 禁止对函数的优化
+;	s_sp 栈保护
+;	uw_table(sync) 生成一个 unwind table ，用于 异常处理 和 栈回溯
+;	"frame-pointer"="non-leaf" 在 非叶函数中，保留 栈指针，以便于 回溯和调试
+;		non-leaf 非叶函数。leaf 不会调用其他函数的函数
+;	no-trapping-math=true 假设不会发生 数学运算的 trap (陷入xx态)
+;	stack-protector-buffer-size=8 启用栈保护，当局部变量超过 8  字节的时候
+;	target-cpu=apple-m1 影响了 生成的指令集和优化
+;	"target-features"="+aes,+crc,+dotprod,+fp-armv8,+fp16fml,
+;		+fullfp16,+lse,+neon,+ras,+rcpc,+rdm,+sha2,+sha3,+v8.1a,
+;		+v8.2a,+v8.3a,+v8.4a,+v8.5a,+v8a,+zcm,+zcz"
+;		列出了针对 cpu 的优化特性
 attributes #0 = { noinline nounwind optnone ssp uwtable(sync) "frame-pointer"="non-leaf" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="apple-m1" "target-features"="+aes,+crc,+dotprod,+fp-armv8,+fp16fml,+fullfp16,+lse,+neon,+ras,+rcpc,+rdm,+sha2,+sha3,+v8.1a,+v8.2a,+v8.3a,+v8.4a,+v8.5a,+v8a,+zcm,+zcz" }
 
-!llvm.module.flags = !{!0, !1, !2, !3}
-!llvm.ident = !{!4}
-
+; 下面这一段代码，定义了 模块级的 meta 数据
+; !0 是一个 meta 数据节点，里面有 3 个元素： i32 1, !"wchar_size", i32 4 
+;	!"wchar_size" 表明，该 meta-data 节点与 wchar_size 相关 ， 也就是这里的大小是 i32 4
+;	i32 1 可能是 一个枚举量 或者是 一个标志位
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{i32 8, !"PIC Level", i32 2}
 !2 = !{i32 7, !"uwtable", i32 1}
 !3 = !{i32 7, !"frame-pointer", i32 1}
+
+; 这里引用了 
+!llvm.module.flags = !{!0, !1, !2, !3}
+
+!llvm.ident = !{!4}
 !4 = !{!"Homebrew clang version 17.0.6"}

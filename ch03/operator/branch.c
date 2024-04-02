@@ -21,6 +21,7 @@ int main()
     } else {
         printf("Line 3 - a 不大于 b\n");
     }
+
     /* 改变 a 和 b 的值 */
     a = 5;
     b = 20;
